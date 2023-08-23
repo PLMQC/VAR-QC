@@ -1,0 +1,29 @@
+{
+  "id": "cac031c0-7a28-4785-a72b-a762a3855fed",
+  "name": "QC&PoAutomation",
+  "publisher": "B2B Software Technologies",
+  "version": "1.0.1.37",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "21.0.0.0",
+  "idRanges": [
+    {
+      "from": 50000,
+      "to": 99999999
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": false,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "10.0",
+  "target":"OnPrem"
+}

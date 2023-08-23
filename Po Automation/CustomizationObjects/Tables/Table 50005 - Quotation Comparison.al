@@ -1,0 +1,284 @@
+table 50005 "Quotation Comparison"
+{
+    // version PH1.0,PO1.0
+
+    // Resource : SM-SivaMohan
+    // 
+    // SM  1.0  04/06/08   "Indent Req No","Indent Req Line No" Fields Added
+
+
+    fields
+    {
+        field(1; "RFQ No."; Code[20])
+        {
+        }
+        field(2; "Quote No."; Code[20])
+        {
+            Editable = false;
+            TableRelation = "Purchase Header"."No." WHERE("Document Type" = FILTER(Quote));
+        }
+        field(3; "Vendor No."; Code[20])
+        {
+            Editable = false;
+            TableRelation = Vendor."No.";
+        }
+        field(4; "Vendor Name"; Text[50])
+        {
+        }
+        field(5; "Total Amount"; Decimal)
+        {
+            BlankZero = true;
+            Editable = false;
+        }
+        field(6; "Item No."; Code[20])
+        {
+            Editable = true;
+            TableRelation = Item."No.";
+        }
+        field(7; Description; Text[50])
+        {
+            Editable = false;
+        }
+        field(8; Quantity; Decimal)
+        {
+            BlankZero = true;
+            DecimalPlaces = 0 : 5;
+        }
+        field(9; Rate; Decimal)
+        {
+            BlankZero = true;
+            Editable = false;
+        }
+        field(10; Amount; Decimal)
+        {
+            BlankZero = true;
+            Editable = false;
+        }
+        field(11; "P & F"; Decimal)
+        {
+            BlankZero = true;
+            Editable = false;
+        }
+        field(12; "Excise Duty"; Decimal)
+        {
+            BlankZero = true;
+            Editable = false;
+        }
+        field(13; "Sales Tax"; Decimal)
+        {
+            BlankZero = true;
+            Editable = false;
+        }
+        field(14; Freight; Decimal)
+        {
+            BlankZero = true;
+            Editable = false;
+        }
+        field(15; Insurance; Decimal)
+        {
+            BlankZero = true;
+            Editable = false;
+        }
+        field(16; Discount; Decimal)
+        {
+            BlankZero = true;
+            Editable = false;
+        }
+        field(17; VAT; Decimal)
+        {
+            BlankZero = true;
+            Editable = false;
+        }
+        field(18; "Payment Term Code"; Code[20])
+        {
+            Editable = false;
+            TableRelation = "Payment Terms".Code;
+        }
+        field(19; "Delivery Date"; Date)
+        {
+        }
+        field(20; "Line No."; Integer)
+        {
+        }
+        field(21; "Carry Out Action"; Boolean)
+        {
+        }
+        field(22; Level; Integer)
+        {
+        }
+        field(23; "Parent Quote No."; Code[20])
+        {
+        }
+        field(24; "Indent No."; Code[20])
+        {
+        }
+        field(25; "Indent Line No."; Integer)
+        {
+        }
+        field(26; "Document Date"; Date)
+        {
+        }
+        field(27; "Due Date"; Date)
+        {
+        }
+        field(28; "Requested Receipt Date"; Date)
+        {
+            Caption = 'Requested Receipt Date';
+        }
+        field(30; "Parent Vendor"; Code[20])
+        {
+        }
+        field(32; "Standard Price"; Decimal)
+        {
+        }
+        field(33; Structure; Code[10])
+        {
+        }
+        field(34; Price; Decimal)
+        {
+        }
+        field(35; "Line Amount"; Decimal)
+        {
+        }
+        field(36; Delivery; Decimal)
+        {
+        }
+        field(37; "Payment Terms"; Decimal)
+        {
+        }
+        field(38; "Total Weightage"; Decimal)
+        {
+        }
+        field(39; "Location Code"; Code[10])
+        {
+        }
+        field(40; "Amt. including Tax"; Decimal)
+        {
+        }
+        field(41; Rating; Decimal)
+        {
+        }
+        field(42; "Variant Code"; Code[10])
+        {
+        }
+        field(43; "Last Direct Cost"; Decimal)
+        {
+            Editable = false;
+        }
+        field(44; "Currency Factor"; Decimal)
+        {
+        }
+        field(45; Remarks; Text[100])
+        {
+        }
+        field(46; Department; Code[20])
+        {
+        }
+        field(49; Quality; Decimal)
+        {
+        }
+        field(54; "Indent Req No"; Code[20])
+        {
+            Description = 'PO1.0';
+            //TableRelation = Table50067;//Balu
+        }
+        field(55; "Indent Req Line No"; Integer)
+        {
+            Description = 'PO1.0';
+        }
+         //B2BJKon15May2023 >>
+        field(56; "Material Type"; Option)
+        {
+            Description = 'PO1.0';
+            Caption = 'Type';
+            OptionMembers = Item,"Fixed Assets",Description,"G/L Account";
+
+            trigger OnValidate();
+            begin
+                //TestStatusOpen;
+            end;
+        }
+        //B2BJKon15May2023 <<
+        field(50000; "Terms & Conditions"; Option)
+        {
+            OptionCaption = '" ,payment terms,delivery,freight,VAT,shipment mode,packing,mode of payment"';
+            OptionMembers = " ","payment terms",delivery,freight,VAT,"shipment mode",packing,"mode of payment";
+        }
+        field(50001; "Approval Status"; Option)
+        {
+            DataClassification = ToBeClassified;
+            OptionMembers = " ",Open,"Pending Approval",Released;
+            OptionCaption = ' ,Open,Pending Approval,Released';
+        }
+        //B2BJK >>
+        field(50020; "Available Inventory"; Decimal)
+        {
+            //DataClassification = ToBeClassified;
+            FieldClass = FlowField;
+            CalcFormula = Sum("Item Ledger Entry".Quantity WHERE("Item No." = FIELD("Item No.")));
+        }
+        field(50021; "PO Qty"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = sum("Purchase Line"."Outstanding Quantity" where("No." = field("Item No."),Type=const(Item),"Document Type"=const(Order)));
+        }
+        field(50022; Make; Text[50])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Make';
+        }
+        field(50023; Model; Text[100])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Model';
+        }
+        field(50024; "Shortage Qty"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Shortage Qty';
+            Editable = false;
+        }
+        field(50025; "Open Quote Qty"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = sum("Purchase Line"."Outstanding Quantity" where("No." = field("Item No."),Type=const(Item),"Document Type"=const(Quote)));
+            Editable = false;
+        }
+        field(50027; "Shortcut Dimension 1 Code_B2B"; Code[20])
+        {
+            CaptionClass = '1,2,1';
+            Caption = 'Shortcut Dimension 1 Code';
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1),
+                                                          Blocked = CONST(false));
+        }
+        field(50028; "Shortcut Dimension 2 Code_B2B"; Code[20])
+        {
+            CaptionClass = '1,2,2';
+            Caption = 'Shortcut Dimension 2 Code';
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2),
+                                                          Blocked = CONST(false), "Division Code" = field("Shortcut Dimension 1 Code_B2B"));
+        }
+        //B2BJK >>
+    }
+
+    keys
+    {
+        key(Key1; "Line No.")
+        {
+        }
+        key(Key2; "Item No.")
+        {
+        }
+        key(Key3; "RFQ No.", "Item No.", "Variant Code")
+        {
+        }
+        key(Key4; "Parent Vendor")
+        {
+        }
+    }
+
+    fieldgroups
+    {
+    }
+}
+
